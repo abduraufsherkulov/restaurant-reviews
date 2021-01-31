@@ -3,6 +3,7 @@ import bcrypt from 'bcrypt';
 import { Router } from 'express';
 import User from '../models/user.model';
 import { errorHandler } from '../helpers/helpers';
+import { tokenHash } from '../middlewares/middlewares';
 
 const authRouter = Router();
 
@@ -65,11 +66,15 @@ authRouter.post('/signin/', async (req, res) => {
         process.env.SECRET_KEY,
         { expiresIn: '24h' },
         (err, token) => {
-          console.log(err);
-          res.send({
-            data: { token },
-            message: 'You have sucessfully signed in',
-          });
+          if (!err) {
+            tokenHash[user._id] = { ...tokenHash[user._id], [token]: true };
+            res.send({
+              data: { token },
+              message: 'You have sucessfully signed in',
+            });
+          } else {
+            console.log(err, 'in signin');
+          }
         }
       );
     } else {

@@ -99,7 +99,7 @@ reviewRouter.post(
         },
       });
     } catch (error) {
-      console.log(error);
+      console.log(error, 'here');
       res.status(400).send(errorHandler(error, true));
     }
   }

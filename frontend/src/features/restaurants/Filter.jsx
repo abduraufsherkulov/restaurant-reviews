@@ -39,7 +39,7 @@ function Filter({ setPagination, setFilterVal, filterVal }) {
             <Rate
               value={filterVal}
               onChange={handleFilter}
-              style={{ paddingBottom: '7px' }}
+              style={{ paddingBottom: '7px', color: '#ffa41c' }}
             />
           </div>
         </Col>

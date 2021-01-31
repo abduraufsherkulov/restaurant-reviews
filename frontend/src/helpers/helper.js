@@ -29,13 +29,13 @@ export const momentize = date => {
 
 export const validateMessages = {
   required: "'${name}' is required!",
-
-  // ...
 };
 
 export const getRandomInt = max => {
   return Math.floor(Math.random() * Math.floor(max));
 };
+
+// for visualisation, we get dummy avatars from https://randomuser.me
 
 export const generatePhoto = (manual = false) => {
   if (typeof manual === 'number') {

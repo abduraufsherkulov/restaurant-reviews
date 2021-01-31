@@ -10,7 +10,6 @@ const restaurantSchema = new Schema(
       trim: true,
       minlength: 3,
       maxlength: 50,
-      validate: /^[A-Za-z0-9]*$/,
     },
     bulk_rating: {
       type: Number,

@@ -95,6 +95,7 @@ restaurantRouter.post(
         data: { total, restaurants },
       });
     } catch (error) {
+      console.log(error);
       res.status(400).send(errorHandler(error, true));
     }
   }

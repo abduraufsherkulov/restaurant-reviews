@@ -44,7 +44,7 @@ const EditReviewModal = ({ isModalVisible, setIsModalVisible, form }) => {
             rules={[{ required: true, message: 'Please rate' }]}
             name="rating"
           >
-            <Rate />
+            <Rate style={{ color: '#ffa41c' }} />
           </Item>
           <Item
             name="comment"

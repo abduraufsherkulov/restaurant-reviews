@@ -1,10 +1,7 @@
 import mongoose from 'mongoose';
+import { roles } from '../settings';
 
 const { Schema } = mongoose;
-
-// 1 - admin
-// 2 - owner
-// 3 - regular user
 
 const userSchema = new Schema(
   {
@@ -18,7 +15,7 @@ const userSchema = new Schema(
     },
     role: {
       type: Number,
-      enum: [1, 2, 3],
+      enum: [roles.owner, roles.customer],
       required: true,
     },
     password: {

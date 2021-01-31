@@ -59,7 +59,7 @@ function AddRestaurant({ isModalVisible, setIsModalVisible }) {
             {
               message:
                 'Restaurant name can only consist of english letters and numbers',
-              pattern: new RegExp('^[A-Za-z0-9 ]*$'),
+              pattern: new RegExp("^[A-Za-z0-9 - ']*$"),
             },
           ]}
         >

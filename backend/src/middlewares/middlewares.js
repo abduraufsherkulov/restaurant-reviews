@@ -5,6 +5,15 @@ import Restaurant from '../models/restaurant.model';
 import Review from '../models/review.model';
 import { calculateRating, statusCodes } from '../helpers/helpers';
 
+/**
+ * when user get deleted, user's tokens remains available,
+ * and user can perform actions until token expires.
+ * To prevent this, implemented tokenHash which saves all
+ * the tokens of user. This can further be improved by implementing
+ * Reddis or Memecached.
+ */
+export const tokenHash = {};
+
 export const verifyToken = (req, res, next) => {
   // Get auth header value
   const bearerHeader = req.headers.authorization;
@@ -18,7 +27,7 @@ export const verifyToken = (req, res, next) => {
     req.token = bearerToken;
 
     jwt.verify(bearerToken, process.env.SECRET_KEY, (error, decoded) => {
-      if (error) {
+      if (!tokenHash[decoded.user._id] || error) {
         res.status(401).json(statusCodes[401]);
       } else {
         req.decoded = decoded;
@@ -32,6 +41,8 @@ export const verifyToken = (req, res, next) => {
   }
 };
 
+// To verify if the user is priviliged to perform particual action
+
 export const verifyPermission = (role) => (req, res, next) => {
   if (role.includes(req.decoded.user.role)) {
     next();
@@ -40,12 +51,15 @@ export const verifyPermission = (role) => (req, res, next) => {
   }
 };
 
+// deletes a user and passes user_id in req;
+
 export const userDelete = async (req, res, next) => {
   const {
     params: { user_id },
   } = req;
   try {
     await User.deleteOne({ _id: user_id });
+    delete tokenHash[user_id];
     const reviews = await Review.find({ 'author.id': user_id });
     await Review.deleteMany({ 'author.id': user_id });
 
@@ -72,6 +86,8 @@ export const userDelete = async (req, res, next) => {
   }
 };
 
+// deletes restaurant and passes restaurants in req
+
 export const restaurantDelete = async (req, res, next) => {
   const {
     params: { restaurant_id },
@@ -93,6 +109,8 @@ export const restaurantDelete = async (req, res, next) => {
     res.status(400).json({ message: error, loc: 'rest' });
   }
 };
+
+// deletes reviews and passes restaurant and review in req
 
 export const reviewDelete = async (req, res, next) => {
   const {
@@ -126,6 +144,8 @@ export const reviewDelete = async (req, res, next) => {
   }
 };
 
+// it handles the pagination and creates valid query;
+
 export const handlePagination = async (req, res, next) => {
   const { role, _id: owner_id } = req.decoded.user;
   let { filterVal, pagination = 1 } = req.query;
@@ -145,6 +165,11 @@ export const handlePagination = async (req, res, next) => {
   next();
 };
 
+/**
+ *
+ * if user sends invalid objectId in request, it fails.
+ * To prevent this we have to check if it is a valid.
+ */
 export const handleValidId = (idType, isQuery = false) => (req, res, next) => {
   let params = isQuery ? req.query : req.params;
   if (params[idType].match(/^[0-9a-fA-F]{24}$/)) {

@@ -30,7 +30,7 @@ export const Editor = ({ onSubmit, loading, form }) => {
   return (
     <Form form={form}>
       <Item rules={[{ required: true, message: 'Please rate' }]} name="rating">
-        <Rate />
+        <Rate style={{ color: '#ffa41c' }} />
       </Item>
       <Item
         rules={[{ required: true, message: 'Please choose visited date' }]}
