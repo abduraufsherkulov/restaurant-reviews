@@ -1,0 +1,715 @@
+{
+  "openapi": "3.0.0",
+  "info": {
+    "title": "Simple API for Restaurant Review",
+    "description": "This is a simple API",
+    "contact": {
+      "email": "abduraufsherkulov@gmail.com"
+    },
+    "version": "1.0.0"
+  },
+  "servers": [
+    {
+      "url": "http://localhost:5000",
+      "description": "SwaggerHub API Auto Mocking"
+    }
+  ],
+  "tags": [
+    {
+      "name": "auth",
+      "description": "auth"
+    },
+    {
+      "name": "users",
+      "description": "users"
+    },
+    {
+      "name": "restaurants",
+      "description": "restaurants"
+    },
+    {
+      "name": "reviews",
+      "description": "reviews"
+    }
+  ],
+  "paths": {
+    "/auth/signup/": {
+      "post": {
+        "tags": ["auth"],
+        "summary": "adds a user",
+        "description": "Adds a user to the system",
+        "operationId": "signUpUser",
+        "requestBody": {
+          "description": "Inventory item to add",
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/SignUp"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "user created"
+          },
+          "400": {
+            "description": "invalid input, object invalid"
+          },
+          "409": {
+            "description": "an existing item already exists"
+          }
+        }
+      }
+    },
+    "/auth/signin/": {
+      "post": {
+        "tags": ["auth"],
+        "summary": "signs a user in",
+        "operationId": "signInUser",
+        "requestBody": {
+          "description": "Inventory item to add",
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/SignIn"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "item created"
+          },
+          "400": {
+            "description": "invalid input, object invalid"
+          },
+          "409": {
+            "description": "an existing item already exists"
+          }
+        }
+      }
+    },
+    "/users/": {
+      "get": {
+        "tags": ["users"],
+        "summary": "gets all users",
+        "description": "This can only be done by the admin",
+        "operationId": "getUsers",
+        "responses": {
+          "200": {
+            "description": "item created"
+          },
+          "400": {
+            "description": "invalid input, object invalid"
+          },
+          "409": {
+            "description": "an existing item already exists"
+          }
+        }
+      }
+    },
+    "/users/{user_id}": {
+      "put": {
+        "tags": ["users"],
+        "summary": "updates a user",
+        "description": "This can only be done by the admin",
+        "operationId": "updateUser",
+        "parameters": [
+          {
+            "name": "user_id",
+            "in": "path",
+            "description": "pass user_id",
+            "required": true,
+            "style": "simple",
+            "explode": false,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "requestBody": {
+          "description": "Inventory item to add",
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/UpdateUser"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "item created"
+          },
+          "400": {
+            "description": "invalid input, object invalid"
+          },
+          "409": {
+            "description": "an existing item already exists"
+          }
+        }
+      },
+      "delete": {
+        "tags": ["users"],
+        "summary": "deletes a user",
+        "description": "This can only be done by the admin",
+        "operationId": "deleteUser",
+        "parameters": [
+          {
+            "name": "user_id",
+            "in": "path",
+            "description": "pass user id to delete",
+            "required": true,
+            "style": "simple",
+            "explode": false,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "search results matching criteria"
+          },
+          "400": {
+            "description": "bad input parameter"
+          }
+        }
+      }
+    },
+    "/restaurants/": {
+      "get": {
+        "tags": ["restaurants"],
+        "summary": "gets all restaurants",
+        "description": "Customers and admin gets all restaurants, owners only get rest. created by them",
+        "operationId": "getRestaurants",
+        "parameters": [
+          {
+            "name": "filterVal",
+            "in": "query",
+            "description": "filter value",
+            "style": "form",
+            "explode": true,
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "pagination",
+            "in": "query",
+            "description": "pagination value",
+            "style": "form",
+            "explode": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "item created"
+          },
+          "400": {
+            "description": "invalid input, object invalid"
+          },
+          "409": {
+            "description": "an existing item already exists"
+          }
+        }
+      },
+      "post": {
+        "tags": ["restaurants"],
+        "summary": "adds a restaurant",
+        "description": "This can only be done by owners",
+        "operationId": "addRestaurant",
+        "parameters": [
+          {
+            "name": "filterVal",
+            "in": "query",
+            "description": "filter value",
+            "style": "form",
+            "explode": true,
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "pagination",
+            "in": "query",
+            "description": "pagination value",
+            "style": "form",
+            "explode": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "requestBody": {
+          "description": "Inventory item to add",
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/AddRestaurant"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "item created"
+          },
+          "400": {
+            "description": "invalid input, object invalid"
+          },
+          "409": {
+            "description": "an existing item already exists"
+          }
+        }
+      }
+    },
+    "/restaurants/{restaurant_id}/": {
+      "get": {
+        "tags": ["restaurants"],
+        "summary": "gets a restaurant",
+        "description": "Admins and customers can see all restaurants, owners can only see rest. created by them",
+        "operationId": "getRestaurant",
+        "parameters": [
+          {
+            "name": "restaurant_id",
+            "in": "path",
+            "description": "pass a restaurant_id to get",
+            "required": true,
+            "style": "simple",
+            "explode": false,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "item created"
+          },
+          "400": {
+            "description": "invalid input, object invalid"
+          },
+          "409": {
+            "description": "an existing item already exists"
+          }
+        }
+      },
+      "put": {
+        "tags": ["restaurants"],
+        "summary": "updates a restaurant",
+        "description": "This can only be done by the admin",
+        "operationId": "updateRestaurant",
+        "parameters": [
+          {
+            "name": "restaurant_id",
+            "in": "path",
+            "description": "pass restaurant_id",
+            "required": true,
+            "style": "simple",
+            "explode": false,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "requestBody": {
+          "description": "Inventory item to add",
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/UpdateRestaurant"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "item created"
+          },
+          "400": {
+            "description": "invalid input, object invalid"
+          },
+          "409": {
+            "description": "an existing item already exists"
+          }
+        }
+      },
+      "delete": {
+        "tags": ["restaurants"],
+        "summary": "deletes a user",
+        "description": "This can only be done by the admin",
+        "operationId": "deleteRestaurant",
+        "parameters": [
+          {
+            "name": "restaurant_id",
+            "in": "path",
+            "description": "pass restaurant_id",
+            "required": true,
+            "style": "simple",
+            "explode": false,
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "filterVal",
+            "in": "query",
+            "description": "filter value",
+            "style": "form",
+            "explode": true,
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "pagination",
+            "in": "query",
+            "description": "pagination value",
+            "style": "form",
+            "explode": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "search results matching criteria"
+          },
+          "400": {
+            "description": "bad input parameter"
+          }
+        }
+      }
+    },
+    "/reviews/": {
+      "get": {
+        "tags": ["reviews"],
+        "summary": "gets all reviews",
+        "description": "Adds a user to the system",
+        "operationId": "getReviews",
+        "parameters": [
+          {
+            "name": "restaurant_id",
+            "in": "query",
+            "description": "pass restaurant_id",
+            "required": true,
+            "style": "form",
+            "explode": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "item created"
+          },
+          "400": {
+            "description": "invalid input, object invalid"
+          },
+          "409": {
+            "description": "an existing item already exists"
+          }
+        }
+      },
+      "post": {
+        "tags": ["reviews"],
+        "summary": "adds a review",
+        "description": "Adds a user to the system",
+        "operationId": "addReview",
+        "parameters": [
+          {
+            "name": "restaurant_id",
+            "in": "query",
+            "description": "pass restaurant_id",
+            "required": true,
+            "style": "form",
+            "explode": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "requestBody": {
+          "description": "Inventory item to add",
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/AddReview"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "item created"
+          },
+          "400": {
+            "description": "invalid input, object invalid"
+          },
+          "409": {
+            "description": "an existing item already exists"
+          }
+        }
+      }
+    },
+    "/reviews/reply/": {
+      "post": {
+        "tags": ["reviews"],
+        "summary": "adds a reply",
+        "description": "Adds a reply to a review",
+        "operationId": "addReply",
+        "parameters": [
+          {
+            "name": "review_id",
+            "in": "query",
+            "description": "pass review_id",
+            "required": true,
+            "style": "form",
+            "explode": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "requestBody": {
+          "description": "Inventory item to add",
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/ReplyReview"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "item created"
+          },
+          "400": {
+            "description": "invalid input, object invalid"
+          },
+          "409": {
+            "description": "an existing item already exists"
+          }
+        }
+      }
+    },
+    "/reviews/{review_id}/": {
+      "put": {
+        "tags": ["reviews"],
+        "summary": "updates a review",
+        "description": "This can only be done by the admin",
+        "operationId": "updateReview",
+        "parameters": [
+          {
+            "name": "review_id",
+            "in": "path",
+            "description": "pass review_id",
+            "required": true,
+            "style": "simple",
+            "explode": false,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "requestBody": {
+          "description": "Inventory item to add",
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/UpdateReview"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "item created"
+          },
+          "400": {
+            "description": "invalid input, object invalid"
+          },
+          "409": {
+            "description": "an existing item already exists"
+          }
+        }
+      },
+      "delete": {
+        "tags": ["reviews"],
+        "summary": "deletes a review",
+        "description": "This can only",
+        "operationId": "deleteReview",
+        "parameters": [
+          {
+            "name": "review_id",
+            "in": "path",
+            "description": "pass review_id",
+            "required": true,
+            "style": "simple",
+            "explode": false,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "search results matching criteria"
+          },
+          "400": {
+            "description": "bad input parameter"
+          }
+        }
+      }
+    }
+  },
+  "components": {
+    "securitySchemes": {
+      "Bearer": {
+        "type": "http",
+        "scheme": "bearer",
+        "bearerFormat": "JWT"
+      }
+    },
+    "schemas": {
+      "SignIn": {
+        "required": ["password", "username"],
+        "type": "object",
+        "properties": {
+          "username": {
+            "minLength": 3,
+            "pattern": "/^[a-z0-9]*$/",
+            "type": "string",
+            "example": "johndoe"
+          },
+          "password": {
+            "minLength": 6,
+            "type": "string",
+            "example": "asdasd"
+          }
+        }
+      },
+      "SignUp": {
+        "required": ["password", "role", "username"],
+        "type": "object",
+        "properties": {
+          "username": {
+            "minLength": 3,
+            "pattern": "/^[a-z0-9]*$/",
+            "type": "string",
+            "example": "johndoe"
+          },
+          "role": {
+            "type": "number",
+            "example": 2,
+            "enum": [2, 3]
+          },
+          "password": {
+            "minLength": 6,
+            "type": "string",
+            "example": "asdasd"
+          }
+        }
+      },
+      "AddRestaurant": {
+        "required": ["name"],
+        "type": "object",
+        "properties": {
+          "name": {
+            "minLength": 3,
+            "pattern": "/^[a-z0-9]*$/",
+            "type": "string",
+            "example": "Evos"
+          }
+        }
+      },
+      "UpdateRestaurant": {
+        "required": ["name"],
+        "type": "object",
+        "properties": {
+          "name": {
+            "minLength": 3,
+            "pattern": "/^[a-z0-9]*$/",
+            "type": "string",
+            "example": "Evos"
+          }
+        }
+      },
+      "UpdateUser": {
+        "required": ["password"],
+        "type": "object",
+        "properties": {
+          "password": {
+            "minLength": 6,
+            "type": "string",
+            "example": "asdasd"
+          }
+        }
+      },
+      "AddReview": {
+        "required": ["comment", "rating", "date"],
+        "type": "object",
+        "properties": {
+          "comment": {
+            "minLength": 3,
+            "type": "string",
+            "example": "Good restaurant!"
+          },
+          "rating": {
+            "minLength": 3,
+            "type": "number",
+            "minimum": 1,
+            "maximum": 5,
+            "example": 5
+          },
+          "date": {
+            "type": "date",
+            "example": "2020-10-02"
+          }
+        }
+      },
+      "ReplyReview": {
+        "required": ["reply", "review_id"],
+        "type": "object",
+        "properties": {
+          "reply": {
+            "minLength": 3,
+            "type": "string",
+            "example": "Thank you!"
+          }
+        }
+      },
+      "UpdateReview": {
+        "required": ["comment", "rating"],
+        "type": "object",
+        "properties": {
+          "comment": {
+            "minLength": 3,
+            "type": "string",
+            "example": "Good restaurant!"
+          },
+          "rating": {
+            "minLength": 3,
+            "type": "number",
+            "minimum": 1,
+            "maximum": 5,
+            "example": 5
+          }
+        }
+      }
+    }
+  },
+  "security": [
+    {
+      "Bearer": []
+    }
+  ]
+}

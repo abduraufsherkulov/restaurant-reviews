@@ -1,0 +1,28 @@
+.list-item {
+  border-radius: 4px;
+  transition: box-shadow 0.3s;
+  border: 1px solid #eeeeef;
+  &:hover {
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+    cursor: pointer;
+  }
+}
+
+.right-col {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  .parent {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    .label {
+      padding-right: 10px;
+    }
+  }
+}
+
+#restaurants-main {
+  padding: 0 10px;
+  min-height: calc(100vh - 64px - 70px);
+}
